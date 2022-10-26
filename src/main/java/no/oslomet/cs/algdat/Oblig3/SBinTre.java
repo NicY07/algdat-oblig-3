@@ -120,8 +120,8 @@ public class SBinTre<T> {
         int antall = 0; // teller antall forekomster av verdi
 
         if (rot != null) {
-            Node<T> p = rot;
-            int cmp;
+            Node<T> p = rot; // setter p lik roten
+            int cmp; // hjelpevariabel for komparatoren
 
             while (p != null) { // bruker samme while-løkka som leggInn()-metoden
                 if (verdi.equals(p.verdi)) antall++;
