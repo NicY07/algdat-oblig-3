@@ -115,7 +115,20 @@ public class SBinTre<T> {
     }
 
     public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (verdi == null) return 0; // null er ikke i treet
+
+        int antall = 0; // teller antall forekomster av verdi
+
+        Node<T> p = rot;
+        if (verdi.equals(p.verdi)) antall++;
+        int cmp;
+
+        while (p != null) { // bruker samme while-løkka som leggInn()-metoden
+            cmp = comp.compare(verdi,p.verdi);     // bruker komparatoren
+            p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
+            if (verdi.equals(p.verdi)) antall++;
+        }
+        return antall++;
     }
 
     public void nullstill() {
@@ -152,9 +165,14 @@ public class SBinTre<T> {
 
     // Tas bort før leveringen
     public static void main(String[] args) {
-        Integer[] a = {4,7,2,9,5,10,8,1,3,6};
+        Integer[] a = {4,7,2,9,4,10,8,7,4,6};
         SBinTre<Integer> tre = new SBinTre<>(Comparator.naturalOrder());
-        for (int verdi : a) {tre.leggInn(verdi); }
-        System.out.println(tre.antall());  // Utskrift: 10
+        for (int verdi : a) { tre.leggInn(verdi); }
+
+        System.out.println(tre.antall());      // Utskrift: 10
+        System.out.println(tre.antall(5));     // Utskrift: 0
+        System.out.println(tre.antall(4));     // Utskrift: 3
+        System.out.println(tre.antall(7));     // Utskrift: 2
+        System.out.println(tre.antall(10));    // Utskrift: 1
     }
 } // ObligSBinTre
