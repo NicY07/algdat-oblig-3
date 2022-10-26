@@ -137,11 +137,14 @@ public class SBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (p.venstre != null) førstePostorden(p.venstre);
+        if (p.høyre != null) førstePostorden(p.høyre);
+        return p;
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        førstePostorden(p);
+        return p.forelder;
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
