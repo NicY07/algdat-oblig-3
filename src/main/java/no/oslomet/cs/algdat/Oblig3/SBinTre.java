@@ -32,6 +32,7 @@ public class SBinTre<T> {
     private Node<T> rot;                            // peker til rotnoden
     private int antall;                             // antall noder
     private int endringer;                          // antall endringer
+    private static int indeks; // hjelpevariable for nestePostorden-metode
 
     private final Comparator<? super T> comp;       // komparator
 
@@ -137,14 +138,31 @@ public class SBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        if (p.venstre != null) førstePostorden(p.venstre);
-        if (p.høyre != null) førstePostorden(p.høyre);
-        return p;
+        while (true)
+        {
+            if (p.venstre != null) p = p.venstre;
+            else if (p.høyre != null) p = p.høyre;
+            else return p;
+            // første node i postorden er noden lengst til venstre
+            // som har ingen høyre barn
+        }
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        førstePostorden(p);
-        return p.forelder;
+        // hvis p har ingen forelder er den roten som har ingen neste
+        // node i postorden
+        if (p.forelder == null) return null;
+
+        // hvis p er høyre barn av sin forelder eller forelderens høyre er
+        // tom, så er forelder den neste node i postorden
+        Node<T> f = p.forelder;
+        if (f.høyre == null || f.høyre == p) return f;
+
+        // I alle andre tilfeller, finn barnet lengst til venstre i
+        // høyre subtreet til forelderen
+        Node<T> n = f.høyre;
+        while (n.venstre != null) n = n.venstre;
+        return n;
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
@@ -167,16 +185,4 @@ public class SBinTre<T> {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
-    // Tas bort før leveringen
-    public static void main(String[] args) {
-        Integer[] a = {4,7,2,9,4,10,8,7,4,6};
-        SBinTre<Integer> tre = new SBinTre<>(Comparator.naturalOrder());
-        for (int verdi : a) { tre.leggInn(verdi); }
-
-        System.out.println(tre.antall());      // Utskrift: 10
-        System.out.println(tre.antall(5));     // Utskrift: 0
-        System.out.println(tre.antall(4));     // Utskrift: 3
-        System.out.println(tre.antall(7));     // Utskrift: 2
-        System.out.println(tre.antall(10));    // Utskrift: 1
-    }
 } // ObligSBinTre
