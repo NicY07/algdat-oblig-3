@@ -119,14 +119,15 @@ public class SBinTre<T> {
 
         int antall = 0; // teller antall forekomster av verdi
 
-        Node<T> p = rot;
-        if (verdi.equals(p.verdi)) antall++;
-        int cmp;
+        if (rot != null) {
+            Node<T> p = rot;
+            int cmp;
 
-        while (p != null) { // bruker samme while-løkka som leggInn()-metoden
-            cmp = comp.compare(verdi,p.verdi);     // bruker komparatoren
-            p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
-            if (verdi.equals(p.verdi)) antall++;
+            while (p != null) { // bruker samme while-løkka som leggInn()-metoden
+                if (verdi.equals(p.verdi)) antall++;
+                cmp = comp.compare(verdi,p.verdi);     // bruker komparatoren
+                p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
+            }
         }
         return antall++;
     }
