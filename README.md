@@ -18,3 +18,7 @@ for komparatoren. Så bruker vi samme while-løkka som i leggInn-metoden fra opp
 I oppgave 3 så brukte jeg while-løkka med true tilstand som mener at den skal fortsetter helt til vi returnerer noe. Så
 bruker vi if-else setninger får finne noden lengst til venstre som har ingen barn. Hvis p har venstre barn flytter vi 
 p til venstre barnet, hvis p har høyre barn flytter vi p til høyre barn, ellers hvis p har ingen barn returnerer vi p.
+
+I oppgave 4 tok jeg utgangspunkt fra førstPostorden-metode for å finne første noden p i postorden, men istedet for å
+returnere p bruker vi break som hopper ut av while-løkka. Neste går vi gjennom treet i postorden helt til p er null ved
+bruk av while-løkka. Vi utfører oppgaven og flytter p til neste noden i postorden ved hjelp av nestePostorden-metode.
