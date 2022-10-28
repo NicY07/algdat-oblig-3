@@ -22,3 +22,9 @@ p til venstre barnet, hvis p har høyre barn flytter vi p til høyre barn, eller
 I oppgave 4 tok jeg utgangspunkt fra førstPostorden-metode for å finne første noden p i postorden, men istedet for å
 returnere p bruker vi break som hopper ut av while-løkka. Neste går vi gjennom treet i postorden helt til p er null ved
 bruk av while-løkka. Vi utfører oppgaven og flytter p til neste noden i postorden ved hjelp av nestePostorden-metode.
+
+I oppgave 5 brukte jeg en kø for å lage en ArrayList av nodene i nivåorden. Først flytter vi første noden i køen til
+hjelpevariabelen temp og så legge til verdien av temp til array listet. Neste hvis temp har venstre og/eller høyre barn 
+legger vi de til køen. Vi fortsetter på samme måte helt til køen er tom, altså vi har gått gjennom hele treet. For
+deserialize metoden lager vi først en ny SBinTre med roten lik første verdi i listet. Deretter med en for-løkka går vi
+gjennom hele listet og bruker leggInn-metode for å legge inn alle verdiene til treet.
