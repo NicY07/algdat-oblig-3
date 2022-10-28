@@ -32,7 +32,6 @@ public class SBinTre<T> {
     private Node<T> rot;                            // peker til rotnoden
     private int antall;                             // antall noder
     private int endringer;                          // antall endringer
-    private static int indeks; // hjelpevariable for nestePostorden-metode
 
     private final Comparator<? super T> comp;       // komparator
 
@@ -120,7 +119,7 @@ public class SBinTre<T> {
 
         int antall = 0; // teller antall forekomster av verdi
 
-        if (rot != null) {
+        if (!tom()) {
             Node<T> p = rot; // setter p lik roten
             int cmp; // hjelpevariabel for komparatoren
 
@@ -130,7 +129,7 @@ public class SBinTre<T> {
                 p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
             }
         }
-        return antall++;
+        return antall;
     }
 
     public void nullstill() {
@@ -144,7 +143,7 @@ public class SBinTre<T> {
             else if (p.høyre != null) p = p.høyre;
             else return p;
             // første node i postorden er noden lengst til venstre
-            // som har ingen høyre barn
+            // som har ingen barn
         }
     }
 
@@ -171,12 +170,13 @@ public class SBinTre<T> {
         {
             if (p.venstre != null) p = p.venstre;
             else if (p.høyre != null) p = p.høyre;
-            else oppgave.utførOppgave(p.verdi); break;
+            else break; // hopper ut av while-løkka
         }
 
+        // går gjennom hele treet i postorden helt til p er null
         while (p != null) {
-            p = nestePostorden(p);
             oppgave.utførOppgave(p.verdi);
+            p = nestePostorden(p);
         }
     }
 
@@ -191,11 +191,43 @@ public class SBinTre<T> {
     }
 
     public ArrayList<T> serialize() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (tom()) return null; // hvis tabellen er tom returnerer vi null
+
+        ArrayList<T> arr = new ArrayList<>();
+        Queue<Node> kø = new LinkedList<>();
+        kø.add(rot); // legger til roten til køen
+
+        while (!kø.isEmpty()) { // går gjennom hele treet
+            Node<T> temp = kø.remove(); // flytter første node i køen til temp
+            arr.add(temp.verdi);        // legger til temp til array listet
+            if (temp.venstre != null) kø.add(temp.venstre); // hvis temp har venstre barn legge til i køen
+            if (temp.høyre != null) kø.add(temp.høyre); // hvis temp har høyre barn legge til i køen
+        }
+        return arr;
     }
 
     static <K> SBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (data.size() == 0) return null; // hvis array liste er tom returnerer det null
+
+        SBinTre<K> nyTre = new SBinTre<>(c);
+        nyTre.rot = new Node(data.get(0),null); // roten er første noden i liste med forelder lik null
+
+        for (int i = 1; i < data.size(); i++) { // går gjennom hele array listet
+            nyTre.leggInn(data.get(i)); // legger inn nodene
+        }
+        return nyTre;
+    }
+
+    public static void main(String[] args) {
+        Integer[] a = {4,7,2,9,4,10,8,7,4,6};
+        SBinTre<Integer> tre = new SBinTre<>(Comparator.naturalOrder());
+        for (int verdi : a) { tre.leggInn(verdi); }
+
+        System.out.println(tre.antall());      // Utskrift: 10
+        System.out.println(tre.antall(5));     // Utskrift: 0
+        System.out.println(tre.antall(4));     // Utskrift: 3
+        System.out.println(tre.antall(7));     // Utskrift: 2
+        System.out.println(tre.antall(10));    // Utskrift: 1
     }
 
 } // ObligSBinTre
